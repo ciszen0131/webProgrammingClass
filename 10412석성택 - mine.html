@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <style>
+        * {
+            text-align: center;
+        }
+
+        #board {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #board tr td {
+            border: 1px solid white;
+            background: red;
+            width: 16px;
+            height: 16px;
+            text-align: center;
+        }
+
+        #board tr td.clicked {
+            background: beige;
+        }
+
+        #board tr td.mine {
+            background: black;
+        }
+
+        body {
+            background-color: gray;
+        }
+
+        #gameCount {
+            margin-top: 10px;
+            font-size: 18px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>지뢰찾기</h1>
+    <table id="board">
+    </table>
+
+    <button onclick="genGrid();">새로운 게임</button>
+    
+    <div id="gameCount">게임 횟수: 0</div>
+
+    <script>
+        let grid = document.getElementById("board");
+        let gameCount = 0;
+        let gameCountDisplay = document.getElementById("gameCount");
+
+        genGrid();
+
+        function genGrid() {
+            grid.innerHTML = "";
+            let x = parseInt(prompt("가로 줄을 입력하세요."));
+            let y = parseInt(prompt("세로 줄을 입력하세요."));
+
+            gameCount++;
+            gameCountDisplay.innerHTML = "게임 횟수: " + gameCount;
+
+            for (let i = 0; i < y; i++) {
+                let row = grid.insertRow(i);
+                for (let j = 0; j < x; j++) {
+                    let cell = row.insertCell(j);
+                    cell.onclick = function () { clickBox(this); };
+                    let mine = document.createAttribute("mine");
+                    if (Math.random() < 0.3)
+                        mine.value = "true";
+                    else
+                        mine.value = "false";
+
+                    cell.setAttributeNode(mine);
+                }
+            }
+        }
+
+        function clickBox(cell) {
+            if (cell.getAttribute("mine") == "true") {
+                cell.className = "mine";
+                alert("게임이 종료되었습니다.");
+            } else {
+                cell.className = "clicked";
+            }
+        }
+    </script>
+</body>
+
+</html>
